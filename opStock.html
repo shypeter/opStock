@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap, from Twitter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="https://getbootstrap.com/2.3.0/assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 60px;
+            /* 60px to make the container go all the way to the bottom of the topbar */
+        }
+    </style>
+    <link href="https://getbootstrap.com/2.3.0/assets/css/bootstrap-responsive.css" rel="stylesheet">
+</head>
+<body>
+    <input id="input" type="text" />
+    <button onclick="send()">Send</button>
+    <pre id="output"></pre>
+</body>
+<script defer>
+    var input = document.getElementById("input");
+    var output = document.getElementById("output");
+    var socket = new WebSocket("ws://localhost:8080/ws");
+
+    socket.onopen = function () {
+        output.innerHTML += "Status: Connected\n";
+        socket.send("fox");
+    }
+
+    socket.onmessage = function (e) {
+        output.innerHTML = e.data + "\n";
+    }
+
+    function send() {
+        socket.send(input.value);
+        input.value = "";
+    }
+</script>
+
+</html>
